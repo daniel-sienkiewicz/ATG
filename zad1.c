@@ -4,10 +4,16 @@
 
 void printMatrix(int *tab, int * size){
 	int i, j;
+
+	printf("    ");
+	for(i = 0; i < *size; i++)
+		printf("%i  ", i);
+
+	printf("\n");
 	for(i = 0; i < *size; i++){
-    	for(j = 0; j < *size; j++){
+		printf("%i  ", i);
+    	for(j = 0; j < *size; j++)
     		printf("|%i ", tab[i * (*size) + j]);
-    	}
     	printf("|\n");
     }
 }
@@ -46,9 +52,8 @@ void degV(int *tab, int * size){
 	printf("Podaj wierzcholek: ");
 	scanf("%i", &x);
 
-	for(i = 0; i < *size; i++){
+	for(i = 0; i < *size; i++)
 		deg += tab[x * (*size) + i];
-	}
 
 	printf("Stopien wierzcholka %i to: %i\n", x, deg);
 	deg = 0;
@@ -57,20 +62,17 @@ void degV(int *tab, int * size){
     		deg += tab[i * (*size) + j];		
     	}
 
-    	if(deg < min){
+    	if(deg < min)
     		min = deg;
-    	}
 
-    	if(deg > max){
+    	if(deg > max)
     		max = deg;
-    	}
 
-    	if(deg%2 == 0){
+    	if(deg%2 == 0)
     		parzy++;
-    	}
-    	else{
+
+    	else
     		nieparzy++;
-    	}
 
     	degT[i] = deg;
 
@@ -84,14 +86,31 @@ void degV(int *tab, int * size){
 	printf("Parzystych deg jest: %i\n", parzy);
 	printf("Nie parzystych deg jest: %i\n", nieparzy);
 	printf("Ciag stopni: ");
-	for(i = 0; i < *size; i++){
+	for(i = 0; i < *size; i++)
     	printf("%i ", degT[i]);
-    }
     printf("\n");
 }
 
 void addV(int *tab, int * size){
+	int i, j;
+	int newMatrix[((*size) + 1 ) * ((*size) + 1)];
+	(*size)++;
 
+	for(i = 0; i < *size; i++){
+ 	   	for(j = 0; j < *size; j++){
+ 	   		newMatrix[i * (*size) + j] = 0;
+    	}
+    }	
+
+	for(i = 0; i < *size - 1; i++){
+ 	   	for(j = 0; j < *size - 1; j++){
+ 	   		newMatrix[i * (*size) + j] = tab[i * (*size) + j];
+    	}
+    }
+
+    printMatrix(newMatrix, &(*size));
+
+    printf("%p %p", &tab, &newMatrix);
 }
 
 void deleteV(int *tab, int * size){
@@ -102,29 +121,27 @@ int main(void){
 	FILE *data;
 	int size, i, j, select = 1;
 	printf("Wcztanie z pliku...\n");
-    if ((data = fopen("data", "r")) == NULL) {
+    if ((data = fopen("data", "r")) == NULL)
     	printf ("Nie mogę otworzyć pliku data!\n");
-    }
 
 	fscanf(data, "%d", &size);
 	printf("Rozmiar: %i\n", size);
-    int matrix[size][size];
+    int matrix[size * size];
 
     // Load data into table from file
-    for(i = 0; i < size; i++){
-    	for(j = 0; j < size; j++){
-    		fscanf(data, "%d", &matrix[i][j]);
-    	}
-    }
+    for(i = 0; i < size; i++)
+    	for(j = 0; j < size; j++)
+    		fscanf(data, "%d", &matrix[i * size + j]);
 
     fclose (data);
     // Print loaded data
-    printMatrix(&matrix[0][0], &size);
+    printMatrix(matrix, &size);
 
 	// Menu	
     while(select){
     	printf("\n1 - Krawedzie\n");
     	printf("2 - Wierzcholki\n");
+    	printf("3 - drukuj\n");
     	printf("0 - koniec\n");
     	printf("\nCo robimy: ");
     	scanf("%i", &select);
@@ -137,12 +154,12 @@ int main(void){
     			scanf("%i", &select);
     			switch(select){
     				case 1:
-    					addE(&matrix[0][0], &size);
-    					printMatrix(&matrix[0][0], &size);
+    					addE(matrix, &size);
+    					printMatrix(matrix, &size);
     					break;
     				case 2:
-    					deleteE(&matrix[0][0], &size);
- 			   			printMatrix(&matrix[0][0], &size);
+    					deleteE(matrix, &size);
+ 			   			printMatrix(matrix, &size);
     					break;
     			}
     			break;
@@ -154,17 +171,20 @@ int main(void){
     			scanf("%i", &select);
     			switch(select){
     				case 1:
-    					addV(&matrix[0][0], &size);
-    					printMatrix(&matrix[0][0], &size);
+    					addV(matrix, &size);
+    					printMatrix(matrix, &size);
     					break;
     				case 2:
-    					deleteV(&matrix[0][0], &size);
- 			   			printMatrix(&matrix[0][0], &size);
+    					deleteV(matrix, &size);
+ 			   			printMatrix(matrix, &size);
     					break;
     				case 3:
-    					degV(&matrix[0][0], &size);
+    					degV(matrix, &size);
     					break;
     			}
+    			break;
+    		case 3:
+    			printMatrix(matrix, &size);
     			break;
     		default:
     			select = 0;
