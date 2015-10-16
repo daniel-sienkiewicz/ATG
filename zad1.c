@@ -120,9 +120,9 @@ void addV(int *tab, int * size){
   	for(i = 0; i < ((count + 1) * (count + 1)); i++)
   		tab[i] = newMatrix[i];
 
-  	free(newMatrix);
+ 	free(newMatrix);
 
-    (*size)++;
+	(*size)++;
 }
 
 void deleteV(int *tab, int * size){
@@ -132,13 +132,13 @@ void deleteV(int *tab, int * size){
 	int * newMatrix = malloc(count * count * sizeof(int));
 
 	for(i = 0; i < ((count) * (count)); i++)
-  		newMatrix[i] = tab[i];
+		newMatrix[i] = tab[i];
 
 	if(nr == count - 1){
 		tab = realloc(tab, (count - 1) * (count - 1) * sizeof(int));
 		
-    } else{
-    	
+	} else{
+
 	}
 
 	(*size)--;

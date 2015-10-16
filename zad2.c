@@ -51,8 +51,7 @@ int main(void){
     printMatrix(m1, &size);
     
     multiply(m1, m2, &size);
-    printMatrix(m2, &size);
-
+    
     for(i = 0; i < size; i++)
         for(j = 0; j < size; j++)
             if(m1[i * size + j] == 1 && m2[i * size + j] >=1)
