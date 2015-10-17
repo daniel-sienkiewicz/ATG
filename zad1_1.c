@@ -38,6 +38,7 @@ void addE(int *tab, int * size){
 	scanf("%i %i", &x, &y);
 	if(!tab[x * (*size) + y]){
 		tab[x * (*size) + y] = 1;
+        tab[y * (*size) + x] = 1;
 	} else{
 		printf("Krawedz juz istnieje!");
 	}
@@ -49,6 +50,7 @@ void deleteE(int *tab, int * size){
 	scanf("%i %i", &x, &y);
 	if(tab[x * (*size) + y]){
 		tab[x * (*size) + y] = 0;
+        tab[y * (*size) + x] = 0;
 	} else{
 		printf("Nie ma takiej krawedzi!");
 	}

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define first 0
+#define first 1
 
 struct L{
 	int nr;
@@ -164,7 +164,7 @@ int main(void){
     // Print loaded data
     printMatrix(matrix, size);
 
-    findCycle(matrix, size, 0);
+    findCycle(matrix, size, first);
     clearL(matrix, size);
     printL();
     printf("Dlugosc cyklu: %i\n", countAll());
