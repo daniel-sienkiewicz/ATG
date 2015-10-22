@@ -113,7 +113,7 @@ void addV(int *tab, int * size){
     		newMatrix[i] = tab[i - x];
     	}
 
-    	if(i > (count * count) + 1){
+    	if(i >= (count * count) + count){
     		newMatrix[i] = 0;
     	}
     }
