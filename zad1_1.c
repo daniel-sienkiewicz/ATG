@@ -23,7 +23,7 @@ void sort(int *tab, int size){
 
 	for(i = 0; i < size; i++){
 		for(j = 0; j < size - 1; j++){
-			if(tab[j] > tab[j + 1]){
+			if(tab[j] < tab[j + 1]){
 				tmp = tab[j];
 				tab[j] = tab[j + 1];
 				tab[j + 1] = tmp;
