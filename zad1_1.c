@@ -150,13 +150,13 @@ void deleteV(int *tab, int * size){
             newMatrix[i * (count - 1) + j] = tab[i * count + j];
     }
 
-    tab = realloc(tab, (count + 1) * (count + 1) * sizeof(int));
+    tab = realloc(tab, (count - 1) * (count - 1) * sizeof(int));
 
     for(i = 0; i < ((count - 1) * (count - 1)); i++)
         tab[i] = newMatrix[i];
 
     (*size)--;
-
+    free(newMatrix);
 }
 
 int main(void){
