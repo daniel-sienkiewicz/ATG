@@ -128,22 +128,35 @@ void addV(int *tab, int * size){
 }
 
 void deleteV(int *tab, int * size){
-	int i, nr, count = (*size);
-	printf("Ktory wierzcholek usuwamy? ");
-	scanf("%i", &nr);
-	int * newMatrix = malloc(count * count * sizeof(int));
+    int i, j, nr, count = (*size);
+    int *newMatrix = malloc(((*size) + 1 ) * ((*size) + 1) * sizeof(int));
+    printf("Podaj wierzcholek do usuniecia: ");
+    scanf("%i", &nr);
 
-	for(i = 0; i < ((count) * (count)); i++)
-		newMatrix[i] = tab[i];
+    for(i = 0; i < count; i++){
+        for(j = 0; j < count; j++)
+            if((i * count + j) >= (i * count + nr))
+                tab[i * count + j] = tab[i * count + j + 1];
+    }
 
-	if(nr == count - 1){
-		tab = realloc(tab, (count - 1) * (count - 1) * sizeof(int));
-		
-	} else{
+    for(i = 0; i < count; i++){
+        for(j = 0; j < count; j++)
+            if(i >= nr)
+                tab[i * count + j] = tab[(i + 1) * count + j];
+    }
 
-	}
+    for(i = 0; i < (count - 1); i++){
+        for(j = 0; j < (count - 1); j++)
+            newMatrix[i * (count - 1) + j] = tab[i * count + j];
+    }
 
-	(*size)--;
+    tab = realloc(tab, (count + 1) * (count + 1) * sizeof(int));
+
+    for(i = 0; i < ((count - 1) * (count - 1)); i++)
+        tab[i] = newMatrix[i];
+
+    (*size)--;
+
 }
 
 int main(void){
