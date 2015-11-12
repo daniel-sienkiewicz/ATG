@@ -114,7 +114,6 @@ int main(void){
 		jumper = jumper->twin->next;
 	} while(jumper != wierzcholek->edge);
 
-
 	printf("\n");
 
 	/*************** B ***************/
