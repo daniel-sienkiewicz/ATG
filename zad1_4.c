@@ -9,6 +9,7 @@ struct arrow {
 	struct wall *f;
 	struct arrow *next;
 	struct arrow *prev;
+	int name;
 };
 
 /*************** WIERZCHOLEK ***************/
@@ -72,6 +73,14 @@ int main(void){
 	e32->f = f2;
 	e41->f = f2;
 	e42->f = f1;
+	e11->name = 11;
+	e12->name = 12;
+	e21->name = 21;
+	e22->name = 22;
+	e31->name = 31;
+	e32->name = 32;
+	e41->name = 41;
+	e42->name = 42;
 	e11->next = e42;
 	e12->next = e32;
 	e21->next = e22;
@@ -91,28 +100,30 @@ int main(void){
 	f1->w = NULL;
 	f2->w = v1;
 
+	struct wall *krawedzieSciany = f2;
+	struct top *wierzcholek = v3;
+
 	struct arrow *jumper = (struct arrow *)malloc(sizeof(struct arrow));
 	/*************** A ***************/
-	printf("Sąsiedzi wierzchołka v1: ");
-	jumper = v3->edge;
+	printf("Sąsiedzi wierzchołka: ");
+	jumper = wierzcholek->edge;
 	do {
 		printf("%i ", jumper->twin->start->nr);
 		jumper = jumper->twin->next;
-	} while(jumper != v3->edge);
+	} while(jumper != wierzcholek->edge);
 
 
 	printf("\n");
 
 	/*************** B ***************/
-	jumper = f2->w->edge->twin;
-
 	printf("Krawędzie sciany f: ");
 	
-	if(jumper != NULL){
+	if(krawedzieSciany->w != NULL){
+		jumper = krawedzieSciany->w->edge->twin;
 		do {
-			printf("v%i ", jumper->start->nr);
+			printf("e%i ", jumper->next->name);
 			jumper = jumper->next;
-		} while(jumper != f2->w->edge->twin);
+		} while(jumper != krawedzieSciany->w->edge->twin);
 	} else {
 		printf("Sciana jest nieskonczona");
 	}
