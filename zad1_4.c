@@ -41,6 +41,8 @@ int main(void){
 	struct wall *f1 = (struct wall *)malloc(sizeof(struct wall));
 	struct wall *f2 = (struct wall *)malloc(sizeof(struct wall));
 	
+	struct arrow *jumper = (struct arrow *)malloc(sizeof(struct arrow));
+
 	v1->edge = e11;
 	v1->nr = 1;
 	v2->edge = e42;
@@ -100,10 +102,10 @@ int main(void){
 	f1->w = NULL;
 	f2->w = v1;
 
+	/*************** USTAWIENIA ***************/
 	struct wall *krawedzieSciany = f2;
 	struct top *wierzcholek = v3;
 
-	struct arrow *jumper = (struct arrow *)malloc(sizeof(struct arrow));
 	/*************** A ***************/
 	printf("Sąsiedzi wierzchołka: ");
 	jumper = wierzcholek->edge;
@@ -146,5 +148,7 @@ int main(void){
 	free(jumper);
 	free(f1);
 	free(f2);
+	free(wierzcholek);
+	free(krawedzieSciany);
 	return 0;
 }
