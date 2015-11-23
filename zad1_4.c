@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*************** Lista skladowych wewnetrznych ***************/
+struct list {
+	struct arrow * strzalka;
+	struct list *next;
+};
 
 /*************** KRAWEDZ ***************/
 struct arrow {
@@ -19,7 +24,8 @@ struct top{
 };
 
 struct wall {
-	struct top *w;
+	struct list *sw;
+	struct arrow *sz;
 };
 
 int main(void){
@@ -42,6 +48,10 @@ int main(void){
 	struct wall *f2 = (struct wall *)malloc(sizeof(struct wall));
 	
 	struct arrow *jumper = (struct arrow *)malloc(sizeof(struct arrow));
+
+	struct list * listaF1 = (struct list *)malloc(sizeof(struct list));
+
+	struct list * tmp = (struct list *)malloc(sizeof(struct list));	
 
 	v1->edge = e11;
 	v1->nr = 1;
@@ -99,9 +109,15 @@ int main(void){
 	e32->prev = e12;
 	e41->prev = e32;
 	e42->prev = e11;
-	f1->w = NULL;
-	f2->w = v1;
 
+	f1->sz = NULL;
+	listaF1->strzalka = e42;
+	listaF1->next = NULL;
+	f1->sw = listaF1;
+
+	f2->sz = e41;
+	f2->sw = NULL;
+	
 	/*************** USTAWIENIA ***************/
 	struct wall *krawedzieSciany = f2;
 	struct top *wierzcholek = v3;
@@ -117,14 +133,26 @@ int main(void){
 	printf("\n");
 
 	/*************** B ***************/
-	printf("Krawędzie sciany f: ");
+	printf("Krawędzie wewnetrzne sciany f: ");
 	
-	if(krawedzieSciany->w != NULL){
-		jumper = krawedzieSciany->w->edge->twin;
+	for(tmp = krawedzieSciany->sw; tmp != NULL; tmp = tmp->next){
+		jumper = tmp->strzalka;
 		do {
-			printf("e%i ", jumper->next->name);
+			printf("e%i ", jumper->name);
 			jumper = jumper->next;
-		} while(jumper != krawedzieSciany->w->edge->twin);
+		} while(jumper != krawedzieSciany->sw->strzalka);
+	
+		printf("\n");
+	}
+
+	printf("\nKrawędzie zewnetrzne sciany f: ");
+	
+	if(krawedzieSciany->sz != NULL){
+		jumper = krawedzieSciany->sz;
+		do {
+			printf("e%i ", jumper->name);
+			jumper = jumper->next;
+		} while(jumper != krawedzieSciany->sz);
 	} else {
 		printf("Sciana jest nieskonczona");
 	}
@@ -144,7 +172,6 @@ int main(void){
 	free(e32);
 	free(e41);
 	free(e42);
-	free(jumper);
 	free(f1);
 	free(f2);
 	free(wierzcholek);
