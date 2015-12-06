@@ -30,7 +30,7 @@ public class EK {
 		tab[0][2] = 99999;
 	}
 	
-	public static int EKalg(int T[][], int graf[][][], ArrayList<Integer> L){
+	public static int cechuj(int T[][], int graf[][][], ArrayList<Integer> L){
 		L.add(0);
 		int ktory;
 		
@@ -40,11 +40,17 @@ public class EK {
 			
 			// Cechujemy wierzcho³ki osi¹galne z i
 			for(int i = 0; i < graf.length; i++){
-				if(graf[i][ktory][1] != 0 && graf[i][ktory][1] - graf[i][ktory][0] > 0){
+				if((graf[i][ktory][1] != 0 && graf[i][ktory][1] - graf[i][ktory][0] > 0) || (graf[ktory][i][1] != 0 && graf[ktory][i][1] - graf[ktory][i][0] > 0)){
 					if(T[i][1] == -1){
 						T[i][0] = ktory;
-						T[i][1] = 1;
-						T[i][2] = Math.min(T[ktory][2], graf[i][ktory][1] - graf[i][ktory][0]);
+						if(graf[ktory][i][1] != 0){
+							T[i][1] = 0;
+							T[i][2] = Math.min(T[ktory][2], graf[ktory][i][0]);
+						}
+						else{
+							T[i][1] = 1;
+							T[i][2] = Math.min(T[ktory][2], graf[i][ktory][1] - graf[i][ktory][0]);
+						}
 						L.add(i);
 					}
 				}
@@ -79,7 +85,11 @@ public class EK {
 		int ktory = T[T.length - 1][0];
 		int poprzedni = T.length - 1;
 		while(ktory != 0){
-			graf[poprzedni][ktory][0] += zwieksz; 
+			if(T[poprzedni][0] == 1){
+				graf[poprzedni][ktory][0] += zwieksz;
+			} else
+				graf[poprzedni][ktory][0] -= zwieksz;
+			
 			poprzedni = ktory;
 			ktory = T[poprzedni][0];
 		}
@@ -95,12 +105,13 @@ public class EK {
 						   {{0, 26},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0}}, // z1
 						   {{0, 24},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0}}, // z2
 						   {{0, 19},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0},{0, 0}}, // z3
-						   {{0, 0}, {0, 8},{0, 6},{0,4},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
-					 	   {{0, 0}, {0, 12},{0, 12},{0,12},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
-						   {{0, 0}, {0, 12},{0, 12},{0,7},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
+						   {{0, 0}, {0, 8},{0, 12},{0,12},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
+					 	   {{0, 0}, {0, 6},{0, 12},{0,12},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
+						   {{0, 0}, {0, 4},{0, 12},{0,7},{0, 0},{0, 0},{0, 0},{0, 0}}, // o1
 						   {{0, 0}, {0, 0},{0, 0},{0, 0},{0,13},{0,32},{0,24},{0, 0}}};// t
 		
 		int T[][] = new int[graf.length][3];
+		ArrayList<Integer> X = new ArrayList<Integer>();
 		
 		// 1
 		// Inicjalizacja kolejki L
@@ -110,7 +121,7 @@ public class EK {
 		do{
 			// 2
 			// Cechujemy wierzcho³ki osi¹galne z i
-			zwieksz = EKalg(T, graf, L);
+			zwieksz = cechuj(T, graf, L);
 			System.out.println("Zwiekszamy o: " + zwieksz);
 		
 			if(zwieksz != 0){
@@ -125,12 +136,29 @@ public class EK {
 				init(T, L);
 			}
 		}while(zwieksz != 0);
+
+		// DEBUG
+		printGraf(graf);
+		System.out.println();
 		
 		// 4
 		// Otrzymany przeplyw jest maksymalny
 		System.out.println("KONIEC");
-		
-		// DEBUG
-		printGraf(graf);
+
+		System.out.print("Przekroj minimalny: ");
+		for(int i = 0; i < 3; i++)
+			if(T[i][0] != -1 || i == 0){
+				System.out.print(i + " ");
+				X.add(i);
+			}
+		System.out.println();
+		System.out.println("|f| = " + X.size());
+		System.out.println("Zbior lukow: ");
+		for(int i : X){
+			for(int j = 0; j < graf.length; j++){
+				if(graf[j][i][1] != 0 && !X.contains(j))
+					System.out.println("(" + i + ", " +  j + ")");
+			}
+		}
 	}
 }
