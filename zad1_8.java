@@ -160,7 +160,7 @@ public class EK {
 			for(int j = 0; j < graf.length; j++){
 				if(graf[j][i][1] != 0 && !X.contains(j)){
 					System.out.println("(" + i + ", " +  j + ")");
-					maxPrzeplyw += graf[j][i][1];
+					maxPrzeplyw += graf[j][i][0];
 				}
 			}
 		}
