@@ -112,6 +112,7 @@ public class EK {
 		
 		int T[][] = new int[graf.length][3];
 		ArrayList<Integer> X = new ArrayList<Integer>();
+		int maxPrzeplyw = 0;
 		
 		// 1
 		// Inicjalizacja kolejki L
@@ -148,17 +149,22 @@ public class EK {
 		System.out.print("Przekroj minimalny: ");
 		for(int i = 0; i < 3; i++)
 			if(T[i][0] != -1 || i == 0){
-				System.out.print(i + " ");
+				System.out.print(i + ", ");
 				X.add(i);
 			}
+		
 		System.out.println();
 		System.out.println("|f| = " + X.size());
 		System.out.println("Zbior lukow: ");
 		for(int i : X){
 			for(int j = 0; j < graf.length; j++){
-				if(graf[j][i][1] != 0 && !X.contains(j))
+				if(graf[j][i][1] != 0 && !X.contains(j)){
 					System.out.println("(" + i + ", " +  j + ")");
+					maxPrzeplyw += graf[j][i][1];
+				}
 			}
 		}
+		
+		System.out.println("Max przeplyw: " + maxPrzeplyw);
 	}
 }
